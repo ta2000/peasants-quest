@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Title -->
+	<title>A Peasant's Quest</title>
+	<!-- Javascript Links -->
+	<script type="text/javascript" src="draw.js"></script>
+	<script type="text/javascript" src="classes.js"></script>
+	<script type="text/javascript" src="movement.js"></script>
+	<script type="text/javascript" src="resize.js"></script>
+	<script type="text/javascript" src="audio.js"></script>
+	<script type="text/javascript" src="distance.js"></script>
+	<!-- Stylesheet link -->
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<canvas id="canvas"></canvas>
+
+	<script>
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext("2d");
+
+	window.onload = function() {
+		resize();
+		entities.level = new sprite('images/level1.png');
+		entities.player = new Player(5, 100, 'images/sprites/player/player_right.png');
+		entities.player.x = Math.round(canvas.width/2.2);
+		entities.player.y = Math.round(canvas.height/3);
+		entities.knight = new Enemy(3, 'images/sprites/enemies/knight_right.png');
+		entities.knight.x = 10000;
+		entities.knight.y = 500;
+		for (var i = 0; i < 10; i++) {
+			entities['peasant'+i] = new Friendly(2, 0, 'images/sprites/villager/villager1_sad.png');
+			entities['peasant'+i].x = Math.floor(Math.random()*3000);
+			entities['peasant'+i].y = Math.floor(Math.random()*1000);
+		};
+		draw();
+	}
+	</script>
+</body>
+</html>
