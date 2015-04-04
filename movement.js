@@ -1,19 +1,7 @@
 function movement() {
 	for ( var i in entities ) {
 		// Player
-		if ( typeof entities[i].keysDown !== "undefined"  &&  typeof entities[i].speed !== "undefined" ) {
-			entities[i].move(i);
-		};
-		// Enemy
-		if ( entities[i].constructor == Enemy ) {
-			entities[i].move(i);
-		};
-		// Friendly
-		if ( entities[i].constructor == Friendly ) {
-			entities[i].move(i);
-		};
-		// Rain
-		if ( entities[i].constructor == Rain ) {
+		if ( typeof entities[i].move !== "undefined" ) {
 			entities[i].move(i);
 		};
 	};
