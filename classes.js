@@ -17,6 +17,7 @@ var Player = function Player( speed, energy, img ) {
 	this.energy = energy;
 	this.image.src = img;
 	this.keysDown = {};
+	this.inventory = [apple, apple];
 }
 Player.prototype = new sprite();
 Player.prototype.constructor = Player;

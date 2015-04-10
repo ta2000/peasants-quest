@@ -70,6 +70,10 @@ Player.prototype.move = function(i) {
 		};
 		entities[i].image.src = 'images/sprites/player/player_right.png';
 	};
+	/*--I--*/
+	if ( 73 in entities[i].keysDown ) {
+		drawInventory();
+	};
 
 };
 

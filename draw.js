@@ -14,7 +14,6 @@ function draw() {
 					entities[i].draw( ctx,2 );
 				break;
 			}
-		//	drawCoords();
 		};
 	};
 
@@ -82,4 +81,27 @@ function drawHud() {
 	// Reset
 	happiness = [];
 	average = 0;
+}
+
+function drawInventory() {
+	ctx.fillStyle = "#000000";
+	ctx.fillRect(entities.player.x-200, entities.player.y-106, 512, 112);
+	ctx.fillStyle = "#FFCC00";
+	ctx.fillRect(entities.player.x-194, entities.player.y-100, 500, 100);
+	for (var i = 0; i < entities.player.inventory.length; i++) {
+
+		ctx.beginPath();
+		ctx.rect(entities.player.x-194+(i*48)+16, entities.player.y-72, 32, 32);
+		ctx.fillStyle = "#FFCC00";
+		ctx.fill();
+		ctx.lineWidth = 4;
+		ctx.strokeStyle = "#3399FF";
+		ctx.stroke();
+		
+		ctx.drawImage(entities.player.inventory[i], (entities.player.x-194+(i*48))+16, entities.player.y-72);
+	}
+		ctx.globalAlpha = 1;
+	ctx.font = "italic 24px Garamond";
+	ctx.fillStyle = '#3399FF';
+	ctx.fillText("INVENTORY", entities.player.x, entities.player.y-80);
 }
