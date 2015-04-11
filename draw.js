@@ -15,6 +15,11 @@ function draw() {
 				break;
 			}
 		};
+		if (typeof entities[i].mission !== "undefined") {
+			ctx.font = "24px Garamond";
+			ctx.fillStyle = 'white';
+			ctx.fillText(entities[i].mission, entities[i].x-200, entities[i].y-20);
+		};
 	};
 
 	if (raining) {
@@ -24,6 +29,7 @@ function draw() {
 		ctx.globalAlpha = 1;
 	}
 
+	drawCoords();
 	drawHud();
 	movement();
 

@@ -26,7 +26,7 @@ Player.prototype.move = function(i) {
 			if (entities[u].constructor != Player) {
 				entities[u].y += entities.player.speed;
 				// Move enemy destination
-				if ( entities[u].constructor == Enemy ) {
+				if ( typeof entities[u].dest !== 'undefined' ) {
 					entities[u].dest[1] += entities.player.speed;
 				};
 			};
@@ -38,7 +38,7 @@ Player.prototype.move = function(i) {
 			if (entities[u].constructor != Player) {
 				entities[u].x += entities.player.speed;
 				// Move enemy destination
-				if ( entities[u].constructor == Enemy ) {
+				if ( typeof entities[u].dest !== 'undefined' ) {
 					entities[u].dest[0] += entities.player.speed;
 				};
 			};
@@ -51,7 +51,7 @@ Player.prototype.move = function(i) {
 			if (entities[u].constructor != Player) {
 				entities[u].y -= entities.player.speed;
 				// Move enemy destination
-				if ( entities[u].constructor == Enemy ) {
+				if ( typeof entities[u].dest !== 'undefined' ) {
 					entities[u].dest[1] -= entities.player.speed;
 				};
 			};
@@ -63,7 +63,7 @@ Player.prototype.move = function(i) {
 			if (entities[u].constructor != Player) {
 				entities[u].x -= entities.player.speed;
 				// Move enemy destination
-				if ( entities[u].constructor == Enemy ) {
+				if ( typeof entities[u].dest !== 'undefined' ) {
 					entities[u].dest[0] -= entities.player.speed;
 				};
 			};
@@ -113,7 +113,7 @@ Enemy.prototype.move = function() {
 	} else {
 		raining = false;
 		pauseMusic();
-		music = king;
+		//music = king;
 	}
 	// Pursue player
 	if ( distance(this, entities.player, canvas.width-700) ) {
@@ -152,13 +152,31 @@ Enemy.prototype.move = function() {
 
 /*-------------- FRIENDLY AI --------------*/
 Friendly.prototype.move = function() {
-	this.x+=this.speed;
-	if ( distance(this, entities.player, 100) ) {
-		if (this.happiness < 100 && entities.player.energy>0) {
-			this.happiness++;
-			entities.player.energy-=.01;
-		};
+	if ( this.x < this.dest[0] ) {
+		this.x += this.speed;
+		this.image.src = 'images/sprites/villager/villager1_happy.png';
 	};
+	if ( this.x > this.dest[0] ) {
+		this.x -= this.speed;
+		this.image.src = 'images/sprites/villager/villager1_happy.png';
+	};
+	if ( this.y < this.dest[1] ) {
+		this.y += this.speed;
+	};
+	if ( this.y > this.dest[1] ) {
+		this.y -= this.speed;
+	};
+	if ( closeTo(this.x, this.dest[0], this.y, this.dest[1], 10) ) {
+		this.dest[0] = this.dest[0]+=getRandomInt(-100, 100);
+		this.dest[1] = this.dest[1]+=getRandomInt(-100, 100);
+	};
+
+	if ( this.dest[0] < 0 || this.dest[0] > 4096*2 ) {
+		this.dest[0] = getRandomInt(-100, 100);
+	};
+	if (this.dest[1] < 0 || this.dest[1] > 1400*2 ) {
+		this.dest[1] = getRandomInt(-100, 100);
+	}
 };
 
 
@@ -184,26 +202,22 @@ function cutscene(e) {
 	var targetY = Math.round(canvas.height/3);
 	if (e.x < targetX) {
 		for (var i in entities) {
-			entities[i].x++;
-		}
+			entities[i].x+=2;
+		};
 	};
 	if (e.x > targetX) {
 		for (var i in entities) {
-			entities[i].x--;
+			entities[i].x-=2;
 		};
 	};
 	if (e.y < targetY) {
 		for (var i in entities) {
-			entities[i].y++;
-		}
+			entities[i].y+=2;
+		};
 	};
 	if (e.y > targetY) {
 		for (var i in entities) {
-			entities[i].y--;
+			entities[i].y-=2;
 		};
 	};
-
-	setInterval( function() {
-		cutscene(e);
-	}, 200);
 }

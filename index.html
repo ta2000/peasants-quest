@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="audio.js"></script>
 	<script type="text/javascript" src="distance.js"></script>
 	<script type="text/javascript" src="items.js"></script>
+	<script type="text/javascript" src="missions.js"></script>
 	<!-- Stylesheet link -->
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
@@ -32,10 +33,14 @@
 		entities.knight.y = 500;
 		for (var i = 0; i < 10; i++) {
 			entities['peasant'+i] = new Friendly(2, 0, 'images/sprites/villager/villager1_sad.png');
-			entities['peasant'+i].x = Math.floor(Math.random()*3000);
-			entities['peasant'+i].y = Math.floor(Math.random()*1000);
+			entities['peasant'+i].x = Math.floor(Math.random()*4096);
+			entities['peasant'+i].y = Math.floor(Math.random()*1400);
 		};
 		draw();
+	}
+
+	function getRandomInt(min, max) {
+    	return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 	</script>
 </body>
