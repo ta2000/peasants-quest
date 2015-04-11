@@ -93,14 +93,6 @@ setInterval( function() {
 /*-------------- KNIGHT AI --------------*/
 Enemy.prototype.move = function() {
 
-	// Bouncing anim
-	var time = Date.now().toString()[10];
-	if ( parseInt(time)>4 ) {
-		this.y+=2;
-	} else {
-		this.y-=2;
-	}
-
 	// Music
 	if ( distance(this, entities.player, canvas.width-500) ) {
 		if (!raining) {
@@ -183,6 +175,23 @@ Friendly.prototype.move = function() {
 			entities.player.energy-=.01;
 		};
 	};
+
+	// Pushing around
+	if ( distance(this, entities.player, 80) ) {
+		if (entities.player.x > this.x) {
+			this.x-=entities.player.speed+1;
+		};
+		if (entities.player.x < this.x) {
+			this.x+=entities.player.speed+1;
+		};
+		if (entities.player.y > this.y) {
+			this.y-=entities.player.speed+1;
+		};
+		if (entities.player.y < this.y) {
+			this.y+=entities.player.speed+1;
+		};
+	};
+
 };
 
 
