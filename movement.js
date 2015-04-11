@@ -177,6 +177,12 @@ Friendly.prototype.move = function() {
 	if (this.dest[1] < 0 || this.dest[1] > 1400*2 ) {
 		this.dest[1] = getRandomInt(-100, 100);
 	}
+	if ( distance(this, entities.player, 100) ) {
+		if (this.happiness < 100 && entities.player.energy>0) {
+			this.happiness++;
+			entities.player.energy-=.01;
+		};
+	};
 };
 
 
