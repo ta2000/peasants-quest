@@ -166,16 +166,16 @@ Friendly.prototype.move = function() {
 	if ( this.y > this.dest[1] ) {
 		this.y -= this.speed;
 	};
-	if ( closeTo(this.x, this.dest[0], this.y, this.dest[1], 10) ) {
-		this.dest[0] = this.dest[0]+=getRandomInt(-100, 100);
-		this.dest[1] = this.dest[1]+=getRandomInt(-100, 100);
+	if ( closeTo(this.x, this.dest[0], this.y, this.dest[1], 10) && Math.floor(Math.random()*50)==0 ) {
+		this.dest[0] = this.dest[0]+=getRandomInt(-200, 200);
+		this.dest[1] = this.dest[1]+=getRandomInt(-200, 200);
 	};
 
 	if ( this.dest[0] < 0 || this.dest[0] > 4096*2 ) {
-		this.dest[0] = getRandomInt(-100, 100);
+		this.dest[0] = getRandomInt(-200, 200);
 	};
-	if (this.dest[1] < 0 || this.dest[1] > 1400*2 ) {
-		this.dest[1] = getRandomInt(-100, 100);
+	if (this.dest[1] < 0 || this.dest[1] > 1000 ) {
+		this.dest[1] = getRandomInt(-200, 200);
 	}
 	if ( distance(this, entities.player, 100) ) {
 		if (this.happiness < 100 && entities.player.energy>0) {
