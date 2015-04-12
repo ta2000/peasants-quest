@@ -144,6 +144,7 @@ Enemy.prototype.move = function() {
 
 /*-------------- FRIENDLY AI --------------*/
 Friendly.prototype.move = function() {
+	// Move towards destination
 	if ( this.x < this.dest[0] ) {
 		this.x += this.speed;
 		this.image.src = 'images/sprites/villager/villager1_happy.png';
@@ -158,17 +159,35 @@ Friendly.prototype.move = function() {
 	if ( this.y > this.dest[1] ) {
 		this.y -= this.speed;
 	};
+
+	// Reset destination once destination is reached
 	if ( closeTo(this.x, this.dest[0], this.y, this.dest[1], 10) && Math.floor(Math.random()*50)==0 ) {
 		this.dest[0] = this.dest[0]+=getRandomInt(-200, 200);
 		this.dest[1] = this.dest[1]+=getRandomInt(-200, 200);
 	};
 
-	if ( this.dest[0] < 0 || this.dest[0] > 4096*2 ) {
+	// Destination is too far left
+	if ( this.dest[0] < entities.level.x ) {
 		this.dest[0] = getRandomInt(-200, 200);
+		this.x+=this.speed*2;
 	};
-	if (this.dest[1] < 0 || this.dest[1] > 1000 ) {
+	// Destination is too far up
+	if (this.dest[1] < entities.level.y ) {
 		this.dest[1] = getRandomInt(-200, 200);
+		this.y+=this.speed*2;
 	}
+	// Destination is too far right
+	if ( this.dest[0] > entities.level.width - entities.level.x ) {
+		this.dest[0] = getRandomInt(-200, 200);
+		this.x-=this.speed*2;
+	};
+	// Destination is too far down
+	if (this.dest[1] > entities.level.height - entities.level.y ) {
+		this.dest[1] = getRandomInt(-200, 200);
+		this.y-=this.speed*2;
+	}
+
+	// Add happiness when near player (temporary)
 	if ( distance(this, entities.player, 100) ) {
 		if (this.happiness < 100 && entities.player.energy>0) {
 			this.happiness++;
@@ -179,16 +198,16 @@ Friendly.prototype.move = function() {
 	// Pushing around
 	if ( distance(this, entities.player, 80) ) {
 		if (entities.player.x > this.x) {
-			this.x-=entities.player.speed+1;
+			this.x-=entities.player.speed-1;
 		};
 		if (entities.player.x < this.x) {
-			this.x+=entities.player.speed+1;
+			this.x+=entities.player.speed-1;
 		};
 		if (entities.player.y > this.y) {
-			this.y-=entities.player.speed+1;
+			this.y-=entities.player.speed-1;
 		};
 		if (entities.player.y < this.y) {
-			this.y+=entities.player.speed+1;
+			this.y+=entities.player.speed-1;
 		};
 	};
 
