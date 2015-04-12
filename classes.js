@@ -27,7 +27,7 @@ var Friendly = function Friendly( speed, happiness, img ) {
 	this.speed = speed;
 	this.happiness = happiness;
 	this.image.src = img;
-	this.dest = [getRandomInt(400, 4096*2), getRandomInt(400, 1400*2)];
+	this.dest = [this.x+getRandomInt(-200, 200), this.y+getRandomInt(-200, 200)];
 	this.mission = missions[Math.floor(Math.random()*missions.length)];
 }
 Friendly.prototype = new sprite();

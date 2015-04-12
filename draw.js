@@ -29,6 +29,7 @@ function draw() {
 		ctx.globalAlpha = 1;
 	}
 
+	drawTarget();
 	drawCoords();
 	drawHud();
 	movement();
@@ -37,6 +38,18 @@ function draw() {
 	window.requestAnimationFrame(draw);
 }
 
+function drawTarget() {
+	ctx.strokeStyle = 'orange';
+	ctx.lineWidth=5;
+	for ( var u in entities ) {
+		if (typeof entities[u].dest !== 'undefined') {
+			ctx.beginPath();
+			ctx.moveTo(entities[u].x+entities[u].image.width/3,entities[u].y+entities[u].image.height/4);
+			ctx.lineTo(entities[u].dest[0],entities[u].dest[1]);
+			ctx.stroke();
+		};
+	};
+}
 
 function drawCoords() {
 	ctx.font = "24px Garamond";

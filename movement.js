@@ -144,6 +144,30 @@ Enemy.prototype.move = function() {
 
 /*-------------- FRIENDLY AI --------------*/
 Friendly.prototype.move = function() {
+
+	// Reset destination once destination is reached
+	if ( closeTo(this.x, this.dest[0], this.y, this.dest[1], 10) && Math.floor(Math.random()*50)==0 ) {
+		this.dest[0] = this.dest[0]+getRandomInt(-200, 200);
+		this.dest[1] = this.dest[1]+getRandomInt(-200, 200);
+	};
+
+	// Destination is too far left
+	if ( this.dest[0] < entities.level.x ) {
+		this.dest[0] += getRandomInt(0, 400);
+	};
+	// Destination is too far up
+	if (this.dest[1] < entities.level.y ) {
+		this.dest[1] += getRandomInt(0, 400);
+	}
+	// Destination is too far right
+	if ( this.dest[0] > entities.level.image.width - entities.level.x ) {
+		this.dest[0] += getRandomInt(-400, 0);
+	};
+	// Destination is too far down
+	if (this.dest[1] > entities.level.image.height - entities.level.y ) {
+		this.dest[1] += getRandomInt(-400, 0);
+	}
+
 	// Move towards destination
 	if ( this.x < this.dest[0] ) {
 		this.x += this.speed;
@@ -159,33 +183,6 @@ Friendly.prototype.move = function() {
 	if ( this.y > this.dest[1] ) {
 		this.y -= this.speed;
 	};
-
-	// Reset destination once destination is reached
-	if ( closeTo(this.x, this.dest[0], this.y, this.dest[1], 10) && Math.floor(Math.random()*50)==0 ) {
-		this.dest[0] = this.dest[0]+=getRandomInt(-200, 200);
-		this.dest[1] = this.dest[1]+=getRandomInt(-200, 200);
-	};
-
-	// Destination is too far left
-	if ( this.dest[0] < entities.level.x ) {
-		this.dest[0] = getRandomInt(-200, 200);
-		this.x+=this.speed*2;
-	};
-	// Destination is too far up
-	if (this.dest[1] < entities.level.y ) {
-		this.dest[1] = getRandomInt(-200, 200);
-		this.y+=this.speed*2;
-	}
-	// Destination is too far right
-	if ( this.dest[0] > entities.level.image.width - entities.level.x ) {
-		this.dest[0] = getRandomInt(-200, 200);
-		this.x-=this.speed*2;
-	};
-	// Destination is too far down
-	if (this.dest[1] > entities.level.image.height - entities.level.y ) {
-		this.dest[1] = getRandomInt(-200, 200);
-		this.y-=this.speed*2;
-	}
 
 	// Add happiness when near player (temporary)
 	if ( distance(this, entities.player, 100) ) {
@@ -209,6 +206,8 @@ Friendly.prototype.move = function() {
 		if (entities.player.y < this.y) {
 			this.y+=entities.player.speed-1;
 		};
+		this.dest[0] = this.dest[0]+getRandomInt(-200, 200);
+		this.dest[1] = this.dest[1]+getRandomInt(-200, 200);
 	};
 
 };
