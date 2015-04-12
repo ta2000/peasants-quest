@@ -17,7 +17,7 @@ var missions = [
 	"The store is running out of food, can you donate some? The farmer probably has some to spare.",
 	"Please, I can't open the door. Push me over to it.",
 	"Donate an organ for the sick at the hospital.",
-	"Please donate money to the poor.",
+	"Please donate money to the poor. Do you have some to spare?",
 	"",
 	"",
 	"",

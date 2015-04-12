@@ -177,12 +177,12 @@ Friendly.prototype.move = function() {
 		this.y+=this.speed*2;
 	}
 	// Destination is too far right
-	if ( this.dest[0] > entities.level.width - entities.level.x ) {
+	if ( this.dest[0] > entities.level.image.width - entities.level.x ) {
 		this.dest[0] = getRandomInt(-200, 200);
 		this.x-=this.speed*2;
 	};
 	// Destination is too far down
-	if (this.dest[1] > entities.level.height - entities.level.y ) {
+	if (this.dest[1] > entities.level.image.height - entities.level.y ) {
 		this.dest[1] = getRandomInt(-200, 200);
 		this.y-=this.speed*2;
 	}
