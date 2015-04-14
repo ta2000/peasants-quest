@@ -35,7 +35,8 @@
 			entities['peasant'+i] = new Friendly(2, 0, 'images/sprites/villager/villager1_sad.png');
 			entities['peasant'+i].x = Math.floor(Math.random()*4096);
 			entities['peasant'+i].y = Math.floor(Math.random()*1400);
-			entities['peasant'+i].dest = [Math.floor(Math.random()*2000), Math.floor(Math.random()*2000)];
+			entities['peasant'+i].dest = [entities['peasant'+i].x, entities['peasant'+i].y];
+			entities['peasant'+i].id = i;
 		};
 		draw();
 	}

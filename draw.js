@@ -8,7 +8,13 @@ function draw() {
 					entities[i].draw( ctx,.5 );
 				break;
 				case Friendly:
-					entities[i].draw( ctx,1.5 )
+					entities[i].draw( ctx,1.5 );
+				break;
+				case basicObj:
+					entities[i].draw( ctx,.5 );
+				break;
+				case House:
+					entities[i].draw( ctx,.85 );
 				break;
 				default:
 					entities[i].draw( ctx,2 );
@@ -18,7 +24,9 @@ function draw() {
 		if (typeof entities[i].mission !== "undefined") {
 			ctx.font = "24px Garamond";
 			ctx.fillStyle = 'white';
-			ctx.fillText(entities[i].mission, entities[i].x-200, entities[i].y-20);
+			if (entities[i].displayMission == true) {
+				ctx.fillText(entities[i].mission, entities[i].x-200, entities[i].y-20);
+			};	
 		};
 	};
 
@@ -29,8 +37,8 @@ function draw() {
 		ctx.globalAlpha = 1;
 	}
 
-	drawTarget();
-	drawCoords();
+	//drawTarget();
+	//drawCoords();
 	drawHud();
 	movement();
 

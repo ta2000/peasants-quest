@@ -23,15 +23,39 @@ Player.prototype = new sprite();
 Player.prototype.constructor = Player;
 
 // Friendly //
-var Friendly = function Friendly( speed, happiness, img ) {
+var Friendly = function Friendly( speed, happiness, img, id ) {
 	this.speed = speed;
 	this.happiness = happiness;
 	this.image.src = img;
 	this.dest = [this.x+getRandomInt(-200, 200), this.y+getRandomInt(-200, 200)];
-	this.mission = missions[Math.floor(Math.random()*missions.length)];
+	// Assign mission
+	var randomMission = missions[Math.floor(Math.random()*missions.length)];
+	this.mission = randomMission[0];
+	this.missionType = randomMission[1];
+	this.displayMission = false;
+	// Only for Lw/O peasants
+	this.createdObj = false;
+	this.lockedObj = randomMission[2];
 }
 Friendly.prototype = new sprite();
 Friendly.prototype.constructor = Friendly;
+
+var basicObj = function basicObj( img, x, y ) {
+	this.image.src = img;
+	this.x = x;
+	this.y = y;
+}
+basicObj.prototype = new sprite();
+basicObj.prototype.constructor = basicObj;
+
+var missionObj = function missionObj( img, x, y ) {
+	this.image.src = img;
+	this.x = x;
+	this.y = y;
+	this.activated = false;
+}
+missionObj.prototype = new sprite();
+missionObj.prototype.constructor = missionObj;
 
 // Enemy //
 var Enemy = function Enemy( speed, img ) {
@@ -41,6 +65,16 @@ var Enemy = function Enemy( speed, img ) {
 }
 Enemy.prototype = new sprite();
 Enemy.prototype.constructor = Enemy;
+
+// Buildings //
+var House = function House( img, x, y ) {
+	this.image.src = img;
+	this.x = x;
+	this.y = y;
+}
+House.prototype = new sprite();
+House.prototype.constructor = House;
+
 
 // Rain //
 var Rain = function Rain( speed, img ) {

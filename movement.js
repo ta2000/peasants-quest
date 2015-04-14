@@ -4,6 +4,16 @@ function movement() {
 		if ( typeof entities[i].move !== "undefined" ) {
 			entities[i].move(i);
 		};
+		if ( entities[i].constructor == Friendly ) {
+			switch(entities[i].missionType) {
+				case "w":
+					entities[i].wander();
+					break;
+				case "l":
+					entities[i].locked();
+					break;
+			}
+		};
 	};
 	playMusic();
 };
@@ -101,7 +111,7 @@ Enemy.prototype.move = function() {
 		if (music != threat) {
 			pauseMusic();
 		}
-		music = threat;
+		//music = threat;
 	} else {
 		raining = false;
 		pauseMusic();
@@ -144,7 +154,63 @@ Enemy.prototype.move = function() {
 
 /*-------------- FRIENDLY AI --------------*/
 Friendly.prototype.move = function() {
+	// Pushing around
+	if ( distance(this, entities.player, 80) ) {
+		if (entities.player.x > this.x) {
+			this.x-=entities.player.speed-1;
+		};
+		if (entities.player.x < this.x) {
+			this.x+=entities.player.speed-1;
+		};
+		if (entities.player.y > this.y) {
+			this.y-=entities.player.speed-1;
+		};
+		if (entities.player.y < this.y) {
+			this.y+=entities.player.speed-1;
+		};
+	};
 
+	// Avoid collision
+	for ( var i in entities ) {
+		if ( distance(this, entities[i], 100) && entities[i]!=this ) {
+			this.dest[0] = this.dest[0]+getRandomInt(-50, 50);
+			this.dest[1] = this.dest[1]+getRandomInt(-50, 50);
+		};
+	}
+	
+	// Move towards destination
+	if ( this.x < this.dest[0] ) {
+		this.x += this.speed;
+		this.image.src = 'images/sprites/villager/villager1_happy.png';
+	};
+	if ( this.x > this.dest[0] ) {
+		this.x -= this.speed;
+		this.image.src = 'images/sprites/villager/villager1_happy.png';
+	};
+	if ( this.y < this.dest[1] ) {
+		this.y += this.speed;
+	};
+	if ( this.y > this.dest[1] ) {
+		this.y -= this.speed;
+	};
+
+	if ( distance(this, entities.player, 200) ) {
+		if ( 69 in entities.player.keysDown ) {
+			this.displayMission = true;
+			if (this.x > entities.player.x) {
+				this.dest[0] = entities.player.x+180;
+			} else {
+				this.dest[0] = entities.player.x-100;
+			}
+			this.dest[1] = entities.player.y+20;
+		}
+	} else {
+		this.displayMission = false;
+	}
+
+};
+
+Friendly.prototype.wander = function() {
 	// Reset destination once destination is reached
 	if ( closeTo(this.x, this.dest[0], this.y, this.dest[1], 10) && Math.floor(Math.random()*50)==0 ) {
 		this.dest[0] = this.dest[0]+getRandomInt(-200, 200);
@@ -168,22 +234,6 @@ Friendly.prototype.move = function() {
 		this.dest[1] += getRandomInt(-400, 0);
 	}
 
-	// Move towards destination
-	if ( this.x < this.dest[0] ) {
-		this.x += this.speed;
-		this.image.src = 'images/sprites/villager/villager1_happy.png';
-	};
-	if ( this.x > this.dest[0] ) {
-		this.x -= this.speed;
-		this.image.src = 'images/sprites/villager/villager1_happy.png';
-	};
-	if ( this.y < this.dest[1] ) {
-		this.y += this.speed;
-	};
-	if ( this.y > this.dest[1] ) {
-		this.y -= this.speed;
-	};
-
 	// Add happiness when near player (temporary)
 	if ( distance(this, entities.player, 100) ) {
 		if (this.happiness < 100 && entities.player.energy>0) {
@@ -194,25 +244,61 @@ Friendly.prototype.move = function() {
 
 	// Pushing around
 	if ( distance(this, entities.player, 80) ) {
-		if (entities.player.x > this.x) {
-			this.x-=entities.player.speed-1;
-		};
-		if (entities.player.x < this.x) {
-			this.x+=entities.player.speed-1;
-		};
-		if (entities.player.y > this.y) {
-			this.y-=entities.player.speed-1;
-		};
-		if (entities.player.y < this.y) {
-			this.y+=entities.player.speed-1;
-		};
 		this.dest[0] = this.dest[0]+getRandomInt(-200, 200);
 		this.dest[1] = this.dest[1]+getRandomInt(-200, 200);
 	};
 
 };
 
+Friendly.prototype.locked = function() {
+	if (this.createdObj == false) {
+		this.createdObj = true;
+		switch (this.lockedObj) {
+			case "tree_cat":
+					entities['tree'+this.id] = new basicObj( 'images/sprites/tree.png', this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
+					entities['missionObj'+this.id] = new missionObj( 'images/sprites/cat.png', entities['tree'+this.id].x, entities['tree'+this.id].y );
+				break;
+			case "tree_dog":
+					entities['tree'+this.id] = new basicObj( 'images/sprites/tree.png', this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
+					entities['missionObj'+this.id] = new missionObj( 'images/sprites/cat.png', entities['tree'+this.id].x, entities['tree'+this.id].y );
+				break;
+			case "house_fire":
+					entities['house'+this.id] = new basicObj( 'images/sprites/buildings/house.png', this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
+				break;
+			case "tree_child":
+					entities['tree'+this.id] = new basicObj( 'images/sprites/tree.png', this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
+					entities['missionObj'+this.id] = new missionObj( 'images/sprites/cat.png', entities['tree'+this.id].x, entities['tree'+this.id].y );
+				break;
+		}
+	};
+	switch (this.lockedObj) {
+		case "tree_cat":
+			this.dest[0] = entities['tree'+this.id].x-100;
+			this.dest[1] = entities['tree'+this.id].y+.8*(entities['tree'+this.id].image.height/.5);
+			break;
+		case "tree_dog":
+			this.dest[0] = entities['tree'+this.id].x-100;
+			this.dest[1] = entities['tree'+this.id].y+.8*(entities['tree'+this.id].image.height/.5);
+			break;
+		case "house_fire":
+				entities['house'+this.id] = new basicObj( 'images/sprites/buildings/house.png', this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
+			break;
+		case "tree_child":
+			this.dest[0] = entities['tree'+this.id].x-100;
+			this.dest[1] = entities['tree'+this.id].y+.8*(entities['tree'+this.id].image.height/.5);
+			break;
+	}
+};
 
+/*-------------- TREE --------------*/
+basicObj.prototype.move = function() {
+	if ( distance(this, entities.player, 200) ) {
+		if ( 69 in entities.player.keysDown ) {
+			this.activated = true;
+			delete this.obj;
+		}
+	}
+};
 /*-------------- RAIN --------------*/
 Rain.prototype.move = function() {
 	this.y += 12;
@@ -235,22 +321,22 @@ function cutscene(e) {
 	var targetY = Math.round(canvas.height/3);
 	if (e.x < targetX) {
 		for (var i in entities) {
-			entities[i].x+=2;
+			entities[i].x+=entities.player.speed;
 		};
 	};
 	if (e.x > targetX) {
 		for (var i in entities) {
-			entities[i].x-=2;
+			entities[i].x-=entities.player.speed;
 		};
 	};
 	if (e.y < targetY) {
 		for (var i in entities) {
-			entities[i].y+=2;
+			entities[i].y+=entities.player.speed;
 		};
 	};
 	if (e.y > targetY) {
 		for (var i in entities) {
-			entities[i].y-=2;
+			entities[i].y-=entities.player.speed;
 		};
 	};
 }
