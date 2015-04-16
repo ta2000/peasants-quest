@@ -255,50 +255,106 @@ Friendly.prototype.locked = function() {
 		this.createdObj = true;
 		switch (this.lockedObj) {
 			case "tree_cat":
-					entities['tree'+this.id] = new basicObj( 'images/sprites/tree.png', this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
-					entities['missionObj'+this.id] = new missionObj( 'images/sprites/cat.png', entities['tree'+this.id].x, entities['tree'+this.id].y );
+					entities['tree'+this.id] = new Tree( this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
+					entities['cat'+this.id] = new cat( entities['tree'+this.id].x, entities['tree'+this.id].y );
 				break;
 			case "tree_dog":
-					entities['tree'+this.id] = new basicObj( 'images/sprites/tree.png', this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
-					entities['missionObj'+this.id] = new missionObj( 'images/sprites/cat.png', entities['tree'+this.id].x, entities['tree'+this.id].y );
+					entities['tree'+this.id] = new Tree( this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
+					entities['dog'+this.id] = new dog( entities['tree'+this.id].x, entities['tree'+this.id].y );
 				break;
 			case "house_fire":
-					entities['house'+this.id] = new basicObj( 'images/sprites/buildings/house.png', this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
+					entities['house'+this.id] = new houseFire( this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
 				break;
 			case "tree_child":
-					entities['tree'+this.id] = new basicObj( 'images/sprites/tree.png', this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
-					entities['missionObj'+this.id] = new missionObj( 'images/sprites/cat.png', entities['tree'+this.id].x, entities['tree'+this.id].y );
+					entities['tree'+this.id] = new Tree( this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
+					entities['child'+this.id] = new treeChild( entities['tree'+this.id].x, entities['tree'+this.id].y );
 				break;
 		}
 	};
 	switch (this.lockedObj) {
 		case "tree_cat":
-			this.dest[0] = entities['tree'+this.id].x-100;
-			this.dest[1] = entities['tree'+this.id].y+.8*(entities['tree'+this.id].image.height/.5);
+				if ( distance(this, entities['cat'+this.id], 50) ) {
+					this.dest[0] = this.x;
+					this.dest[1] = this.y;
+					this.mission = successMessage;
+					this.happiness = 100;
+					delete entities['cat'+this.id];
+					this.lockedObj = "";
+				} else {
+					this.dest[0] = entities['cat'+this.id].x-200;
+					this.dest[1] = entities['cat'+this.id].y+.8*(entities['cat'+this.id].image.height/.5);
+				};
 			break;
 		case "tree_dog":
-			this.dest[0] = entities['tree'+this.id].x-100;
-			this.dest[1] = entities['tree'+this.id].y+.8*(entities['tree'+this.id].image.height/.5);
+				if ( distance(this, entities['dog'+this.id], 50) ) {
+					this.dest[0] = this.x;
+					this.dest[1] = this.y;
+					this.mission = successMessage;
+					this.happiness = 100;
+					delete entities['dog'+this.id];
+					this.lockedObj = "";
+				} else {
+					this.dest[0] = entities['dog'+this.id].x-200;
+					this.dest[1] = entities['dog'+this.id].y+.8*(entities['dog'+this.id].image.height/.5);
+				}
 			break;
 		case "house_fire":
-				entities['house'+this.id] = new basicObj( 'images/sprites/buildings/house.png', this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
+				this.dest[0] = entities['house'+this.id].x-200;
+				this.dest[1] = entities['house'+this.id].y+.8*(entities['house'+this.id].image.height/.5);
 			break;
 		case "tree_child":
-			this.dest[0] = entities['tree'+this.id].x-100;
-			this.dest[1] = entities['tree'+this.id].y+.8*(entities['tree'+this.id].image.height/.5);
+				if ( distance(this, entities['child'+this.id], 50) ) {
+					this.dest[0] = this.x;
+					this.dest[1] = this.y;
+					this.mission = successMessage;
+					this.happiness = 100;
+					delete entities['child'+this.id];
+					this.lockedObj = "";
+				} else {
+					this.dest[0] = entities['child'+this.id].x-200;
+					this.dest[1] = entities['child'+this.id].y+.8*(entities['child'+this.id].image.height/.5);
+				}
 			break;
 	}
 };
 
-/*-------------- TREE --------------*/
-basicObj.prototype.move = function() {
+/*-------------- MISSION OBJECTS --------------*/
+cat.prototype.move = function() {
 	if ( distance(this, entities.player, 200) ) {
 		if ( 69 in entities.player.keysDown ) {
-			this.activated = true;
-			delete this.obj;
+			console.log("hello");
+			this.y+=400;
+			this.x-=300;
 		}
 	}
 };
+dog.prototype.move = function() {
+	if ( distance(this, entities.player, 200) ) {
+		if ( 69 in entities.player.keysDown ) {
+			console.log("hello");
+			this.y+=400;
+			this.x-=300;
+		}
+	}
+};
+houseFire.prototype.move = function() {
+	if ( distance(this, entities.player, 200) ) {
+		if ( 69 in entities.player.keysDown ) {
+			console.log("hello");
+			delete this;
+		}
+	}
+};
+treeChild.prototype.move = function() {
+	if ( distance(this, entities.player, 200) ) {
+		if ( 69 in entities.player.keysDown ) {
+			console.log("hello");
+			this.y+=500;
+			this.x-=300;
+		}
+	}
+};
+
 /*-------------- RAIN --------------*/
 Rain.prototype.move = function() {
 	this.y += 12;

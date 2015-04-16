@@ -40,22 +40,68 @@ var Friendly = function Friendly( speed, happiness, img, id ) {
 Friendly.prototype = new sprite();
 Friendly.prototype.constructor = Friendly;
 
-var basicObj = function basicObj( img, x, y ) {
-	this.image.src = img;
-	this.x = x;
-	this.y = y;
-}
-basicObj.prototype = new sprite();
-basicObj.prototype.constructor = basicObj;
 
-var missionObj = function missionObj( img, x, y ) {
-	this.image.src = img;
+
+/********** MISSION OBJECTS **********/
+var cat = function cat( x, y ) {
+	this.image.src ='images/sprites/cat.png';
 	this.x = x;
 	this.y = y;
 	this.activated = false;
 }
-missionObj.prototype = new sprite();
-missionObj.prototype.constructor = missionObj;
+cat.prototype = new sprite();
+cat.prototype.constructor = cat;
+
+var dog = function dog( x, y ) {
+	this.image.src = 'images/sprites/dog.png';
+	this.x = x;
+	this.y = y;
+	this.activated = false;
+}
+dog.prototype = new sprite();
+dog.prototype.constructor = dog;
+
+var houseFire = function houseFire( x, y ) {
+	this.image.src = 'images/sprites/buildings/house.png';
+	this.x = x;
+	this.y = y;
+	this.activated = false;
+}
+houseFire.prototype = new sprite();
+houseFire.prototype.constructor = houseFire;
+
+var fire = function fire( x, y ) {
+	this.image.src = 'images/sprites/buildings/house.png';
+	this.x = x;
+	this.y = y;
+	this.activated = false;
+}
+fire.prototype = new sprite();
+fire.prototype.constructor = fire;
+
+var treeChild = function treeChild( x, y ) {
+	this.image.src = 'images/sprites/villager/child.png';
+	this.x = x;
+	this.y = y;
+	this.activated = false;
+}
+treeChild.prototype = new sprite();
+treeChild.prototype.constructor = treeChild;
+
+
+/********** MISSION OBJECTS **********/
+
+
+
+/********** DECORATION OBJECTS **********/
+// Tree //
+var Tree = function Tree( x, y ) {
+	this.image.src = 'images/sprites/tree.png';
+	this.x = x;
+	this.y = y;
+}
+Tree.prototype = new sprite();
+Tree.prototype.constructor = Tree;
 
 // Enemy //
 var Enemy = function Enemy( speed, img ) {

@@ -5,8 +5,8 @@ var missions = [
 	["My son is missing. I need you to help me find him.",											 	"w",	"child_missing"],
 	["THE STORE IS ON FIRE! We need to save it!",													 	"w",	"store_fire"],
 	["My kid fell into the river! Help me get him out!",											 	"w",	"child_river"],
-	["Holy smokes! A bear is in the village. Get him to leave with by luring him out with food.",	 	"w",	"bear_market"],
-	["A cougar just breached the village boundary! Lure him away with some food from the store.",	 	"w",	"cougar_hospital"],
+	["Holy smokes! A bear is in the village. Get him to leave with by luring him out with food.",	 	"w",	"bear"],
+	["A cougar just breached the village boundary! Lure him away with some food from the store.",	 	"w",	"cougar"],
 	["Brr, I don't have a house to go into in this cold. Can you take me to one?",						"p",	" "],
 	["I'm gravely sick but I don't have medicine. Would you borrow some for me?",						"c",	" "],
 	["My boy is about to fall out of a tree! Please catch him!",										"l",	"tree_child"],
@@ -40,3 +40,5 @@ var negatives = [
 	["My horse!  Who is the criminal that pushed him into the river?"],
 	["You just threw me off my horse!"]
 ];
+
+var successMessage = "Yay! Thank you for helping me!";

@@ -10,11 +10,11 @@ function draw() {
 				case Friendly:
 					entities[i].draw( ctx,1.5 );
 				break;
-				case basicObj:
-					entities[i].draw( ctx,.5 );
+				case Tree:
+					entities[i].draw( ctx, .5 )
 				break;
 				case House:
-					entities[i].draw( ctx,.85 );
+					entities[i].draw( ctx,.5 );
 				break;
 				default:
 					entities[i].draw( ctx,2 );
