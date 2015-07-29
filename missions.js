@@ -2,7 +2,7 @@ var missions = [
 	["My cat is stuck in a tree. Can you help me?",													 	"l",	"tree_cat"],
 	["My dog is stuck in a tree. Can you help me?",													 	"l",	"tree_dog"],
 	["My house is on fire! Help me put it out!",													 	"l",	"house_fire"],
-	["My son is missing. I need you to help me find him.",											 	"w",	"child_missing"],
+	["My son is missing. I need you to help me find him.",											 	"l",	"child_missing"],
 	["THE STORE IS ON FIRE! We need to save it!",													 	"w",	"store_fire"],
 	["My kid fell into the river! Help me get him out!",											 	"w",	"child_river"],
 	["Holy smokes! A bear is in the village. Get him to leave with by luring him out with food.",	 	"w",	"bear"],

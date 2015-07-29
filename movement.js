@@ -111,11 +111,11 @@ Enemy.prototype.move = function() {
 		if (music != threat) {
 			pauseMusic();
 		}
-		//music = threat;
+		music = threat;
 	} else {
 		raining = false;
 		pauseMusic();
-		//music = king;
+		music = king;
 	}
 	// Pursue player
 	if ( distance(this, entities.player, canvas.width-700) ) {
@@ -129,7 +129,7 @@ Enemy.prototype.move = function() {
 	};
 	// Remove player energy
 	if ( distance(this, entities.player, 100) ) {
-		entities.player.energy-=.1;
+		entities.player.energy-=.3;
 	}
 	if ( this.x < this.dest[0] ) {
 		this.x += this.speed;
@@ -181,11 +181,11 @@ Friendly.prototype.move = function() {
 	// Move towards destination
 	if ( this.x < this.dest[0] ) {
 		this.x += this.speed;
-		this.image.src = 'images/sprites/villager/villager1_happy.png';
+		this.image.src = 'images/sprites/villager/villager1_sad.png';
 	};
 	if ( this.x > this.dest[0] ) {
 		this.x -= this.speed;
-		this.image.src = 'images/sprites/villager/villager1_happy.png';
+		this.image.src = 'images/sprites/villager/villager1_sad.png';
 	};
 	if ( this.y < this.dest[1] ) {
 		this.y += this.speed;
@@ -234,14 +234,6 @@ Friendly.prototype.wander = function() {
 		this.dest[1] += getRandomInt(-400, 0);
 	}
 
-	// Add happiness when near player (temporary)
-	if ( distance(this, entities.player, 100) ) {
-		if (this.happiness < 100 && entities.player.energy>0) {
-			this.happiness++;
-			entities.player.energy-=.01;
-		};
-	};
-
 	// Pushing around
 	if ( distance(this, entities.player, 80) ) {
 		this.dest[0] = this.dest[0]+getRandomInt(-200, 200);
@@ -269,6 +261,9 @@ Friendly.prototype.locked = function() {
 					entities['tree'+this.id] = new Tree( this.x+getRandomInt(-500, 500), this.y+getRandomInt(-500, 500) );
 					entities['child'+this.id] = new treeChild( entities['tree'+this.id].x, entities['tree'+this.id].y );
 				break;
+			case "child_missing":
+					entities['lostChild'+this.id] = new lostChild( getRandomInt(100, entities.level.image.width), getRandomInt(100, entities.level.image.height) );
+				break;
 		}
 	};
 	switch (this.lockedObj) {
@@ -280,6 +275,7 @@ Friendly.prototype.locked = function() {
 					this.happiness = 100;
 					delete entities['cat'+this.id];
 					this.lockedObj = "";
+					this.missionType = "w";
 				} else {
 					this.dest[0] = entities['cat'+this.id].x-200;
 					this.dest[1] = entities['cat'+this.id].y+.8*(entities['cat'+this.id].image.height/.5);
@@ -293,6 +289,7 @@ Friendly.prototype.locked = function() {
 					this.happiness = 100;
 					delete entities['dog'+this.id];
 					this.lockedObj = "";
+					this.missionType = "w";
 				} else {
 					this.dest[0] = entities['dog'+this.id].x-200;
 					this.dest[1] = entities['dog'+this.id].y+.8*(entities['dog'+this.id].image.height/.5);
@@ -310,9 +307,26 @@ Friendly.prototype.locked = function() {
 					this.happiness = 100;
 					delete entities['child'+this.id];
 					this.lockedObj = "";
+					this.missionType = "w";
 				} else {
 					this.dest[0] = entities['child'+this.id].x-200;
 					this.dest[1] = entities['child'+this.id].y+.8*(entities['child'+this.id].image.height/.5);
+				}
+			break;
+		case "child_missing":
+				if ( distance(this, entities['lostChild'+this.id], 50) ) {
+					this.dest[0] = this.x;
+					this.dest[1] = this.y;
+					this.mission = successMessage;
+					this.happiness = 100;
+					delete entities['lostChild'+this.id];
+					this.lockedObj = "";
+					this.missionType = "w";
+				} else if ( !closeTo(this.x, entities['lostChild'+this.id].x, this.y, entities['lostChild'+this.id].y, 10) && entities['lostChild'+this.id].activated == false) {
+					this.wander();
+				} else if (entities['lostChild'+this.id].activated) {
+					this.dest[0] = entities['lostChild'+this.id].x;
+					this.dest[1] = entities['lostChild'+this.id].y;
 				}
 			break;
 	}
@@ -325,6 +339,7 @@ cat.prototype.move = function() {
 			console.log("hello");
 			this.y+=400;
 			this.x-=300;
+			this.activated = true;
 		}
 	}
 };
@@ -334,6 +349,7 @@ dog.prototype.move = function() {
 			console.log("hello");
 			this.y+=400;
 			this.x-=300;
+			this.activated = true;
 		}
 	}
 };
@@ -342,6 +358,7 @@ houseFire.prototype.move = function() {
 		if ( 69 in entities.player.keysDown ) {
 			console.log("hello");
 			delete this;
+			this.activated = true;
 		}
 	}
 };
@@ -351,6 +368,14 @@ treeChild.prototype.move = function() {
 			console.log("hello");
 			this.y+=500;
 			this.x-=300;
+			this.activated = true;
+		}
+	}
+};
+lostChild.prototype.move = function() {
+	if ( distance(this, entities.player, 200) ) {
+		if ( 69 in entities.player.keysDown ) {
+			this.activated = true;
 		}
 	}
 };

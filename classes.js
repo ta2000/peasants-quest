@@ -33,7 +33,6 @@ var Friendly = function Friendly( speed, happiness, img, id ) {
 	this.mission = randomMission[0];
 	this.missionType = randomMission[1];
 	this.displayMission = false;
-	// Only for Lw/O peasants
 	this.createdObj = false;
 	this.lockedObj = randomMission[2];
 }
@@ -88,6 +87,14 @@ var treeChild = function treeChild( x, y ) {
 treeChild.prototype = new sprite();
 treeChild.prototype.constructor = treeChild;
 
+var lostChild = function lostChild( x, y ) {
+	this.image.src = 'images/sprites/villager/child.png';
+	this.x = x;
+	this.y = y;
+	this.activated = false;
+}
+lostChild.prototype = new sprite();
+lostChild.prototype.constructor = lostChild;
 
 /********** MISSION OBJECTS **********/
 
